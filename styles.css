@@ -478,3 +478,28 @@ h2 {
         background: white !important;
     }
 }
+/* Estilo do rodapé */
+.footer {
+  position: fixed; /* Fixa o rodapé na parte inferior da página */
+  bottom: 0;
+  width: 100%;
+  background-color: #f4f4f4; /* Cor de fundo suave */
+  color: #333; /* Cor do texto */
+  text-align: center;
+  padding: 10px 0;
+  font-size: 14px;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Sombra para destaque */
+  z-index: 1000; /* Garante que o rodapé fique acima de outros elementos */
+}
+
+/* Estilo do link no rodapé */
+.footer-link {
+  color: #007bff; /* Cor azul para o link */
+  text-decoration: none; /* Remove o sublinhado */
+  font-weight: bold;
+}
+
+.footer-link:hover {
+  text-decoration: underline; /* Adiciona sublinhado ao passar o mouse */
+  color: #0056b3; /* Cor mais escura no hover */
+}
