@@ -8,7 +8,7 @@
 html, body {
     height: 100%;
     width: 100%;
-    overflow: hidden;
+    overflow: auto;
     font-family: 'Comic Neue', 'Comic Sans MS', cursive, sans-serif;
     background: linear-gradient(135deg, #f4e4bc 0%, #e6d3a3 50%, #d4c19c 100%);
     background-attachment: fixed;
@@ -464,11 +464,11 @@ h2 {
     body * {
         visibility: hidden;
     }
-    
+
     #certificate-content, #certificate-content * {
         visibility: visible;
     }
-    
+
     #certificate-content {
         position: absolute;
         left: 0;
