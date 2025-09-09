@@ -1,119 +1,124 @@
-<!DOCTYPE html>\
-<html lang="pt-BR">\
-<head>\
-<meta charset="UTF-8">\
-<meta name="viewport" content="width=device-width, initial-scale=1.0">\
-<title>Meu Nome na História - Jogo Educacional</title>\
-<link rel="stylesheet" href="styles.css">\
-<link href="[https://fonts.googleapis.com/css2?family=Fredoka+One:wght@400&family=Comic+Neue:wght@300;400;700&display=swap](https://fonts.googleapis.com/css2?family=Fredoka+One:wght@400&family=Comic+Neue:wght@300;400;700&display=swap)" rel="stylesheet">
-<script src="script.js" defer></script>
-</head>\
-<body>\
-<!-- Tela de Início -->\
-<div id="welcome-screen" class="screen active">\
-<div class="papyrus-background">\
-<div class="content-container">\
-<h1 class="game-title">\
-<span class="title-line">Meu Nome</span>\
-<span class="title-line">na História</span>\
-</h1>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meu Nome na História - Jogo Educacional</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="preconnect" href="[https://fonts.googleapis.com](https://fonts.googleapis.com)">
+<link rel="preconnect" href="[https://fonts.gstatic.com](https://fonts.gstatic.com)" crossorigin>
+<link href="[https://fonts.googleapis.com/css2?family=Comic+Neue:wght@300;400;700&display=swap](https://fonts.googleapis.com/css2?family=Comic+Neue:wght@300;400;700&display=swap)" rel="stylesheet">
+</head>
+<body>
+<!-- Tela de Boas-vindas -->
+<div id="welcome-screen" class="screen active">
+<div class="content-container">
+<div class="mascot-container">
+<div class="mascot">🏛️</div>
+<div class="speech-bubble">Olá, pequeno explorador!</div>
+</div>
 
-```
-            <div class="mascot-container">
-                <div class="owl-mascot">
-                    <div class="owl-body">
-                        <div class="owl-eyes">
-                            <div class="eye left-eye"></div>
-                            <div class="eye right-eye"></div>
-                        </div>
-                        <div class="owl-beak"></div>
-                    </div>
-                    <div class="speech-bubble">
-                        Olá! Vamos descobrir como seu nome era escrito na antiguidade?
-                    </div>
-                </div>
-            </div>
-            
-            <button id="start-btn" class="ancient-button">
-                🏛️ Começar Aventura
+
+        <h1 class="game-title">Meu Nome na História</h1>
+        <p class="game-subtitle">Descubra como seu nome era escrito na antiguidade!</p>
+        
+        <div class="intro-text">
+            <p>🏺 Viaje no tempo e descubra como os antigos gregos e romanos escreviam seu nome!</p>
+            <p>✨ Uma aventura educacional para crianças de 4 a 6 anos</p>
+        </div>
+        
+        <button id="start-game" class="primary-btn">
+            🚀 Começar Aventura
+        </button>
+    </div>
+</div>
+
+<!-- Tela de Busca -->
+<div id="search-screen" class="screen">
+    <div class="content-container">
+        <div class="mascot-container">
+            <div class="mascot">📜</div>
+            <div class="speech-bubble">Digite seu nome aqui!</div>
+        </div>
+        
+        <h2>Qual é o seu nome?</h2>
+        
+        <div class="input-container">
+            <input type="text" id="player-name" placeholder="Digite seu nome aqui..." maxlength="30">
+            <div class="input-decoration">✨</div>
+        </div>
+        
+        <div class="button-group">
+            <button id="search-name" class="primary-btn">
+                🔍 Descobrir Meu Nome
+            </button>
+            <button id="back-to-welcome" class="secondary-btn">
+                ⬅️ Voltar
             </button>
         </div>
     </div>
 </div>
 
-<!-- Tela de Input do Nome -->
-<div id="input-screen" class="screen">
-    <div class="clay-tablet-background">
-        <div class="content-container">
-            <h2 class="section-title">Digite seu nome:</h2>
+<!-- Tela de Carregamento -->
+<div id="loading-screen" class="screen">
+    <div class="content-container">
+        <div class="loading-animation">
+            <div class="ancient-symbol">⏳</div>
+            <h2>Viajando no tempo...</h2>
+            <p>Procurando seu nome nos pergaminhos antigos!</p>
             
-            <div class="scribe-mascot">
-                <div class="scribe-body">
-                    <div class="scribe-head"></div>
-                    <div class="scribe-scroll"></div>
-                </div>
-                <div class="speech-bubble">
-                    Escreva seu nome aqui e eu vou procurar nos pergaminhos antigos!
-                </div>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
             </div>
             
-            <div class="input-container">
-                <input type="text" id="name-input" placeholder="Seu nome aqui..." maxlength="20">
-                <button id="search-btn" class="ancient-button">
-                    🔍 Buscar na História
-                </button>
+            <div class="loading-messages">
+                <p>🏛️ Consultando os sábios gregos...</p>
+                <p>🏺 Verificando os arquivos romanos...</p>
             </div>
-            
-            <button id="back-to-welcome" class="back-button">← Voltar</button>
         </div>
     </div>
 </div>
 
 <!-- Tela de Resultado -->
 <div id="result-screen" class="screen">
-    <div class="scroll-background">
-        <div class="content-container">
-            <h2 class="section-title">Seu nome na antiguidade:</h2>
-            
-            <div class="result-container">
-                <div class="name-display">
-                    <h3 id="original-name"></h3>
-                </div>
-                
-                <div class="ancient-names">
-                    <div class="ancient-name-card greek">
-                        <h4>Em Grego Koiné (séc. I d.C.)</h4>
-                        <div class="ancient-text" id="greek-name"></div>
-                        <button class="pronounce-btn" data-lang="greek">🔊 Ouvir</button>
-                    </div>
-                    
-                    <div class="ancient-name-card latin">
-                        <h4>Em Latim Clássico</h4>
-                        <div class="ancient-text" id="latin-name"></div>
-                        <button class="pronounce-btn" data-lang="latin">🔊 Ouvir</button>
-                    </div>
-                </div>
-                
-                <div class="discovery-stamp">
-                    <div class="stamp-content">
-                        ⭐ DESCOBERTA ⭐
-                    </div>
-                </div>
-            </div>
-            
-            <div class="action-buttons">
-                <button id="certificate-btn" class="ancient-button">
-                    📜 Baixar Certificado
-                </button>
-                <button id="try-again-btn" class="ancient-button">
-                    🔄 Tentar Outro Nome
-                </button>
-            </div>
+    <div class="content-container">
+        <div class="mascot-container">
+            <div class="mascot">🎉</div>
+            <div class="speech-bubble">Que descoberta incrível!</div>
+        </div>
+        
+        <h2>Sua Descoberta Histórica!</h2>
+        
+        <div id="result-content" class="result-container">
+            <!-- Conteúdo será inserido dinamicamente -->
+        </div>
+        
+        <div class="button-group">
+            <button id="hear-pronunciation" class="primary-btn">
+                🔊 Ouvir Pronúncia
+            </button>
+            <button id="generate-certificate" class="primary-btn">
+                📜 Gerar Certificado
+            </button>
+            <button id="try-again" class="secondary-btn">
+                🔄 Tentar Outro Nome
+            </button>
+            <button id="back-to-start" class="secondary-btn">
+                🏠 Voltar ao Início
+            </button>
         </div>
     </div>
 </div>
 
-<!-- Elementos de Audio -->
-<audio id="success-sound" preload="auto">
-    <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTuR2O/Adi0FJHfH8N2QQAoUXrTp66hVF
-```
+<!-- Área do Certificado (oculta) -->
+<div id="certificate-area" style="display: none;">
+    <div id="certificate-content">
+        <!-- Conteúdo do certificado será inserido aqui -->
+    </div>
+</div>
+
+<script src="script.js"></script>
+
+
+</body>
+</html>
