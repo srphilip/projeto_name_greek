@@ -396,7 +396,7 @@ function hearPronunciation() {
 
         // Falar primeiro o grego, depois o latino
         speechSynthesis.speak(greekUtterance);
-        
+
         greekUtterance.onend = function() {
             setTimeout(() => {
                 speechSynthesis.speak(latinUtterance);
@@ -430,28 +430,28 @@ function generateCertificate() {
 
     certificateContent.innerHTML = `
         <div class="certificate-title">🏛️ CERTIFICADO DE DESCOBERTA HISTÓRICA 🏺</div>
-        
+
         <div class="certificate-content">
             <p>Certificamos que <strong>${currentOriginalName}</strong> realizou uma incrível jornada no tempo e descobriu como seu nome era escrito na antiguidade!</p>
-            
+
             <div class="certificate-names">
                 <p><strong>🏛️ Em Grego Antigo (Koiné):</strong><br>
                 <span style="font-size: 1.5em; color: #8b4513;">${currentNameData.greek}</span><br>
                 <em>Pronúncia: ${currentNameData.pronunciation.greek}</em></p>
-                
+
                 <p><strong>🏺 Em Latim Clássico:</strong><br>
                 <span style="font-size: 1.5em; color: #8b4513;">${currentNameData.latin}</span><br>
                 <em>Pronúncia: ${currentNameData.pronunciation.latin}</em></p>
-                
+
                 <p><strong>📜 Significado:</strong> ${currentNameData.meaning}</p>
                 <p><strong>🌍 Origem:</strong> ${currentNameData.origin}</p>
             </div>
-            
+
             <p>Parabéns por esta descoberta histórica!</p>
         </div>
-        
+
         <div class="certificate-signature">
-            <p>🏛️ Academia de Estudos Históricos 🏺</p>
+            <p>🏛️ Academia de Estudos Históricos do SESI-CILF (2º Período C)🏺</p>
             <p>Data: ${currentDate}</p>
         </div>
     `;
@@ -459,7 +459,7 @@ function generateCertificate() {
     // Mostrar e imprimir o certificado
     const certificateArea = document.getElementById('certificate-area');
     certificateArea.style.display = 'block';
-    
+
     setTimeout(() => {
         window.print();
         certificateArea.style.display = 'none';
