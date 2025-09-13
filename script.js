@@ -599,7 +599,7 @@ function generateCertificate() {
         </div>
 
         <div class="certificate-signature">
-            <p>🏛️ Academia de Estudos Históricos 🏺</p>
+            <p>🏛️ Academia de Estudos Históricos do SESI CILF - 2º período C 🏺</p>
             <p>Data: ${currentDate}</p>
         </div>
     `;
