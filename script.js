@@ -1,4 +1,5 @@
-// Base de dados de nomes com transliterações
+// Base de dados de nomes com transliterações (mantida)
+// OBS: As chaves originais têm acentos. Abaixo criamos um índice normalizado
 const namesDatabase = {
     // Nomes masculinos
     "joão": {
@@ -205,46 +206,241 @@ const namesDatabase = {
     }
 };
 
-// Regras de transliteração para nomes não encontrados
-const transliterationRules = {
-    // Vogais
-    'a': { greek: 'α', latin: 'a' },
-    'e': { greek: 'ε', latin: 'e' },
-    'i': { greek: 'ι', latin: 'i' },
-    'o': { greek: 'ο', latin: 'o' },
-    'u': { greek: 'υ', latin: 'u' },
+/* ============================================
+   UTILITÁRIOS DE NORMALIZAÇÃO
+============================================ */
+function normalizeName(name) {
+    return name.toLowerCase()
+        .normalize('NFD')               // separa acentos
+        .replace(/[\u0300-\u036f]/g, '')// remove marcas de acento
+        .replace(/ß/g, 'ss')
+        .replace(/ñ/g, 'n')
+        .trim();
+}
 
-    // Consoantes
-    'b': { greek: 'β', latin: 'b' },
-    'c': { greek: 'κ', latin: 'c' },
-    'd': { greek: 'δ', latin: 'd' },
-    'f': { greek: 'φ', latin: 'f' },
-    'g': { greek: 'γ', latin: 'g' },
-    'h': { greek: 'χ', latin: 'h' },
-    'j': { greek: 'ι', latin: 'i' },
-    'k': { greek: 'κ', latin: 'c' },
-    'l': { greek: 'λ', latin: 'l' },
-    'm': { greek: 'μ', latin: 'm' },
-    'n': { greek: 'ν', latin: 'n' },
-    'p': { greek: 'π', latin: 'p' },
-    'q': { greek: 'κ', latin: 'qu' },
-    'r': { greek: 'ρ', latin: 'r' },
-    's': { greek: 'σ', latin: 's' },
-    't': { greek: 'τ', latin: 't' },
-    'v': { greek: 'β', latin: 'v' },
-    'w': { greek: 'ω', latin: 'v' },
-    'x': { greek: 'ξ', latin: 'x' },
-    'y': { greek: 'υ', latin: 'y' },
-    'z': { greek: 'ζ', latin: 'z' }
+// Índice normalizado para permitir busca com/sem acento
+const normalizedDB = {};
+for (const [key, value] of Object.entries(namesDatabase)) {
+    normalizedDB[normalizeName(key)] = value;
+}
+
+/* ============================================
+   OVERRIDES para latinização e grego Koiné
+   (para nomes comuns que têm forma consagrada)
+============================================ */
+const latinOverrides = {
+    // masculinos
+    'joao': 'Ioannes',
+    'jose': 'Iosephus',
+    'pedro': 'Petrus',
+    'paulo': 'Paulus',
+    'marcos': 'Marcus',
+    'lucas': 'Lucas',
+    'andre': 'Andreas',
+    'carlos': 'Carolus',
+    'antonio': 'Antonius',
+    'francisco': 'Franciscus',
+    // femininos
+    'maria': 'Maria',
+    'ana': 'Anna',
+    'helena': 'Helena',
+    'sofia': 'Sophia',
+    'catarina': 'Catharina',
+    'beatriz': 'Beatrix',
+    'clara': 'Clara',
+    'julia': 'Iulia',
+    'teresa': 'Theresia',
+    'isabel': 'Isabella'
 };
 
+const greekOverrides = {
+    'joao': 'Ἰωάννης',
+    'jose': 'Ἰωσήφ',
+    'pedro': 'Πέτρος',
+    'paulo': 'Παῦλος',
+    'marcos': 'Μάρκος',
+    'lucas': 'Λουκᾶς',
+    'andre': 'Ἀνδρέας',
+    'carlos': 'Κάρολος',
+    'antonio': 'Ἀντώνιος',
+    'francisco': 'Φραγκίσκος',
+    'maria': 'Μαρία',
+    'ana': 'Ἄννα',
+    'helena': 'Ἑλένη',
+    'sofia': 'Σοφία',
+    'catarina': 'Αἰκατερίνη',
+    'beatriz': 'Βεατρίκη',
+    'clara': 'Κλάρα',
+    'julia': 'Ἰουλία',
+    'teresa': 'Θηρεσία',
+    'isabel': 'Ἰσαβέλλα'
+};
+
+/* ============================================
+   TRANSLITERAÇÃO PARA LATIM CLÁSSICO
+   - Remove J (→ I), W (→ V), Y (→ I)
+   - K (→ C), Ç (→ C)
+   - NH (→ NI), LH (→ LI)
+   - Mantém PH/TH/CH/QU quando existirem
+   - Não força terminação -us (evita erros)
+============================================ */
+function capitalizeWord(str) {
+    if (!str) return str;
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+function transliterateToLatinClassical(input) {
+    const src = normalizeName(input);
+
+    // Override consagrados
+    if (latinOverrides[src]) {
+        return latinOverrides[src];
+    }
+
+    let s = src;
+
+    // Digramas portugueses
+    s = s.replace(/nh/g, 'ni');
+    s = s.replace(/lh/g, 'li');
+
+    // Ortografia latina
+    s = s.replace(/ç/g, 'c');
+    s = s.replace(/j/g, 'i');
+    s = s.replace(/y/g, 'i');
+    s = s.replace(/w/g, 'v');
+    s = s.replace(/k/g, 'c');
+
+    // Mantém ch/ph/th/qu como já estiverem
+    // (se aparecerem em maiúsculas no original, a capitalização final resolve)
+
+    // Limpeza final (apenas letras, espaços e hífens)
+    s = s.replace(/[^a-z\s\-']/g, '');
+
+    // Capitaliza cada palavra
+    s = s.split(/\s+/).map(capitalizeWord).join(' ');
+
+    return s;
+}
+
+/* ============================================
+   TRANSLITERAÇÃO PARA GREGO KOINÉ (monotônico)
+   - Trata dígrafos: ch→χ, ph→φ, th→θ, ps→ψ, qu→κου, nh→νι, lh→λι
+   - Ditongos: ai→αι, ei→ει, oi→οι, ou→ου, au→αυ, eu→ευ
+   - C antes de e/i → σ; caso contrário → κ
+   - H isolado é silencioso (removido) após tratar dígrafos
+   - Sigma final (σ → ς no fim de palavra)
+============================================ */
+function toTitleCaseGreek(str) {
+    return str.split(/\s+/).map(w => w ? w.charAt(0).toUpperCase() + w.slice(1) : w).join(' ');
+}
+
+function applyFinalSigma(s) {
+    // σ no fim de cada palavra vira ς
+    return s.replace(/σ(?=($|[\s\-]))/g, 'ς');
+}
+
+function transliterateToGreekKoine(input) {
+    const key = normalizeName(input);
+
+    // Overrides consagrados (com diacríticos quando apropriado)
+    if (greekOverrides[key]) {
+        return greekOverrides[key];
+    }
+
+    let s = key;
+
+    // Ditongos (protege primeiro para não separar depois)
+    s = s.replace(/ou/g, '§OU§')
+         .replace(/ai/g, '§AI§')
+         .replace(/ei/g, '§EI§')
+         .replace(/oi/g, '§OI§')
+         .replace(/au/g, '§AU§')
+         .replace(/eu/g, '§EU§');
+
+    // Dígrafos específicos
+    s = s.replace(/nh/g, '§NH§')
+         .replace(/lh/g, '§LH§')
+         .replace(/ch/g, '§CH§')
+         .replace(/ph/g, '§PH§')
+         .replace(/th/g, '§TH§')
+         .replace(/ps/g, '§PS§')
+         .replace(/qu/g, '§QU§');
+
+    // Agora converte seções protegidas
+    s = s
+        .replace(/§OU§/g, 'ου')
+        .replace(/§AI§/g, 'αι')
+        .replace(/§EI§/g, 'ει')
+        .replace(/§OI§/g, 'οι')
+        .replace(/§AU§/g, 'αυ')
+        .replace(/§EU§/g, 'ευ')
+        .replace(/§NH§/g, 'νι')
+        .replace(/§LH§/g, 'λι')
+        .replace(/§CH§/g, 'χ')
+        .replace(/§PH§/g, 'φ')
+        .replace(/§TH§/g, 'θ')
+        .replace(/§PS§/g, 'ψ')
+        .replace(/§QU§/g, 'κου');
+
+    // Ajuste de 'c' antes de e/i/y → σ; senão κ
+    s = s.replace(/c(?=[eiy])/g, 'σ').replace(/c/g, 'κ');
+
+    // Mapeamento básico de letras restantes
+    const map = {
+        'a':'α','b':'β','d':'δ','e':'ε','f':'φ','g':'γ',
+        'h':'',   // h sozinho é mudo em koiné (depois de tratar ch/th/ph)
+        'i':'ι','j':'ι','k':'κ','l':'λ','m':'μ','n':'ν',
+        'o':'ο','p':'π','q':'κ','r':'ρ','s':'σ','t':'τ',
+        'u':'ου','v':'β','w':'ου','x':'ξ','y':'υ','z':'ζ',
+        '\'':'\'','-':'-',' ':' '
+    };
+
+    let out = '';
+    for (const ch of s) {
+        out += (map[ch] !== undefined) ? map[ch] : ch;
+    }
+
+    // Sigma final
+    out = applyFinalSigma(out);
+
+    // Capitalização de cada palavra
+    out = toTitleCaseGreek(out);
+
+    return out;
+}
+
+/* ============================================
+   CONSTRUÇÃO DO OBJETO DE RESULTADO PADRÃO
+============================================ */
+function buildTransliterationResult(inputName) {
+    const greek = transliterateToGreekKoine(inputName);
+    const latin = transliterateToLatinClassical(inputName);
+
+    // Pronúncias aproximadas simples (opcional e didática)
+    const greekPron = "Pronúncia aproximada";
+    const latinPron = "Pronúncia aproximada";
+
+    return {
+        greek,
+        latin,
+        pronunciation: {
+            greek: greekPron,
+            latin: latinPron
+        },
+        meaning: "Nome moderno adaptado",
+        origin: "Transliteração fonética (grego koiné e latim clássico)"
+    };
+}
+
+/* ============================================
+   BUSCA E EXIBIÇÃO
+============================================ */
 // Variáveis globais
 let currentScreen = 'welcome';
 let isFullscreen = false;
 let currentNameData = null;
 let currentOriginalName = '';
 
-// Função para entrar em tela cheia
 function enterFullscreen() {
     if (!isFullscreen) {
         const element = document.documentElement;
@@ -261,15 +457,12 @@ function enterFullscreen() {
     }
 }
 
-// Função para mostrar uma tela específica
 function showScreen(screenId) {
-    // Esconder todas as telas
     const screens = document.querySelectorAll('.screen');
     screens.forEach(screen => {
         screen.classList.remove('active');
     });
 
-    // Mostrar a tela solicitada
     const targetScreen = document.getElementById(screenId);
     if (targetScreen) {
         setTimeout(() => {
@@ -280,60 +473,23 @@ function showScreen(screenId) {
     currentScreen = screenId;
 }
 
-// Função para normalizar nome (remover acentos e converter para minúsculas)
-function normalizeName(name) {
-    return name.toLowerCase()
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .trim();
-}
-
-// Função para transliterar nome usando regras básicas
+// Função principal de transliteração (atualizada)
 function transliterateName(name) {
-    const normalizedName = normalizeName(name);
-    let greekResult = '';
-    let latinResult = '';
-
-    for (let char of normalizedName) {
-        if (transliterationRules[char]) {
-            greekResult += transliterationRules[char].greek;
-            latinResult += transliterationRules[char].latin;
-        } else {
-            greekResult += char;
-            latinResult += char;
-        }
-    }
-
-    // Capitalizar primeira letra
-    greekResult = greekResult.charAt(0).toUpperCase() + greekResult.slice(1);
-    latinResult = latinResult.charAt(0).toUpperCase() + latinResult.slice(1);
-
-    return {
-        greek: greekResult,
-        latin: latinResult,
-        pronunciation: {
-            greek: "Pronúncia aproximada",
-            latin: "Pronúncia aproximada"
-        },
-        meaning: "Nome único e especial",
-        origin: "Transliteração moderna"
-    };
+    return buildTransliterationResult(name);
 }
 
-// Função para buscar nome na base de dados
 function searchName(inputName) {
     const normalizedInput = normalizeName(inputName);
 
-    // Buscar nome exato na base de dados
-    if (namesDatabase[normalizedInput]) {
-        return namesDatabase[normalizedInput];
+    // Primeiro tenta encontrar na base normalizada (aceita com/sem acento)
+    if (normalizedDB[normalizedInput]) {
+        return normalizedDB[normalizedInput];
     }
 
-    // Se não encontrar, usar transliteração
+    // Se não encontrar, translitera corretamente (grego koiné e latim clássico)
     return transliterateName(inputName);
 }
 
-// Função para exibir resultado
 function displayResult(nameData, originalName) {
     const resultContent = document.getElementById('result-content');
 
@@ -363,38 +519,30 @@ function displayResult(nameData, originalName) {
     `;
 }
 
-// Função para simular carregamento
 function showLoading(callback) {
     showScreen('loading-screen');
-
-    // Simular tempo de carregamento
     setTimeout(() => {
         callback();
     }, 2000);
 }
 
-// Função para ouvir pronúncia
 function hearPronunciation() {
     if (!currentNameData || !currentOriginalName) {
         alert('Nenhum nome foi encontrado para pronunciar!');
         return;
     }
 
-    // Verificar se o navegador suporta síntese de fala
     if ('speechSynthesis' in window) {
-        // Pronunciar o nome grego
         const greekUtterance = new SpeechSynthesisUtterance(currentNameData.pronunciation.greek);
-        greekUtterance.lang = 'el-GR'; // Grego
+        greekUtterance.lang = 'el-GR';
         greekUtterance.rate = 0.7;
         greekUtterance.pitch = 1;
 
-        // Pronunciar o nome latino
         const latinUtterance = new SpeechSynthesisUtterance(currentNameData.pronunciation.latin);
-        latinUtterance.lang = 'la'; // Latim (pode não estar disponível em todos os navegadores)
+        latinUtterance.lang = 'la';
         latinUtterance.rate = 0.7;
         latinUtterance.pitch = 1;
 
-        // Falar primeiro o grego, depois o latino
         speechSynthesis.speak(greekUtterance);
 
         greekUtterance.onend = function() {
@@ -403,22 +551,22 @@ function hearPronunciation() {
             }, 500);
         };
 
-        // Mostrar feedback visual
         const btn = document.getElementById('hear-pronunciation');
-        const originalText = btn.innerHTML;
-        btn.innerHTML = '🔊 Falando...';
-        btn.disabled = true;
+        if (btn) {
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '🔊 Falando...';
+            btn.disabled = true;
 
-        latinUtterance.onend = function() {
-            btn.innerHTML = originalText;
-            btn.disabled = false;
-        };
+            latinUtterance.onend = function() {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            };
+        }
     } else {
         alert('Seu navegador não suporta síntese de fala. Tente usar um navegador mais recente!');
     }
 }
 
-// Função para gerar certificado
 function generateCertificate() {
     if (!currentNameData || !currentOriginalName) {
         alert('Nenhum nome foi encontrado para gerar certificado!');
@@ -451,12 +599,11 @@ function generateCertificate() {
         </div>
 
         <div class="certificate-signature">
-            <p>🏛️ Academia de Estudos Históricos do SESI-CILF (2º Período C)🏺</p>
+            <p>🏛️ Academia de Estudos Históricos 🏺</p>
             <p>Data: ${currentDate}</p>
         </div>
     `;
 
-    // Mostrar e imprimir o certificado
     const certificateArea = document.getElementById('certificate-area');
     certificateArea.style.display = 'block';
 
@@ -466,7 +613,6 @@ function generateCertificate() {
     }, 500);
 }
 
-// Função principal de busca
 function handleNameSearch() {
     const nameInput = document.getElementById('player-name');
     const inputName = nameInput.value.trim();
@@ -490,55 +636,43 @@ function handleNameSearch() {
     });
 }
 
-// Função para limpar campo de entrada
 function clearInput() {
     const nameInput = document.getElementById('player-name');
     nameInput.value = '';
     nameInput.focus();
 }
 
-// Event listeners
+/* ============================================
+   EVENTOS
+============================================ */
 document.addEventListener('DOMContentLoaded', function() {
-    // Botão iniciar jogo
     const startBtn = document.getElementById('start-game');
     if (startBtn) {
         startBtn.addEventListener('click', function() {
             enterFullscreen();
             showScreen('search-screen');
-
-            // Focar no campo de entrada após um pequeno delay
             setTimeout(() => {
                 const nameInput = document.getElementById('player-name');
-                if (nameInput) {
-                    nameInput.focus();
-                }
+                if (nameInput) nameInput.focus();
             }, 600);
         });
     }
 
-    // Botão buscar nome
     const searchBtn = document.getElementById('search-name');
     if (searchBtn) {
         searchBtn.addEventListener('click', handleNameSearch);
     }
 
-    // Campo de entrada - buscar ao pressionar Enter
     const nameInput = document.getElementById('player-name');
     if (nameInput) {
         nameInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                handleNameSearch();
-            }
+            if (e.key === 'Enter') handleNameSearch();
         });
-
-        // Limitar caracteres especiais
-        nameInput.addEventListener('input', function(e) {
-            // Permitir apenas letras, espaços e alguns caracteres especiais
+        nameInput.addEventListener('input', function() {
             this.value = this.value.replace(/[^a-zA-ZÀ-ÿ\s\-']/g, '');
         });
     }
 
-    // Botão voltar da tela de busca
     const backToWelcomeBtn = document.getElementById('back-to-welcome');
     if (backToWelcomeBtn) {
         backToWelcomeBtn.addEventListener('click', function() {
@@ -547,7 +681,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Botão tentar outro nome
     const tryAgainBtn = document.getElementById('try-again');
     if (tryAgainBtn) {
         tryAgainBtn.addEventListener('click', function() {
@@ -555,14 +688,11 @@ document.addEventListener('DOMContentLoaded', function() {
             showScreen('search-screen');
             setTimeout(() => {
                 const nameInput = document.getElementById('player-name');
-                if (nameInput) {
-                    nameInput.focus();
-                }
+                if (nameInput) nameInput.focus();
             }, 600);
         });
     }
 
-    // Botão voltar ao início
     const backToStartBtn = document.getElementById('back-to-start');
     if (backToStartBtn) {
         backToStartBtn.addEventListener('click', function() {
@@ -573,47 +703,45 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Botão ouvir pronúncia
     const hearPronunciationBtn = document.getElementById('hear-pronunciation');
     if (hearPronunciationBtn) {
         hearPronunciationBtn.addEventListener('click', hearPronunciation);
     }
 
-    // Botão gerar certificado
     const generateCertificateBtn = document.getElementById('generate-certificate');
     if (generateCertificateBtn) {
         generateCertificateBtn.addEventListener('click', generateCertificate);
     }
 
-    // Detectar saída do modo fullscreen
     document.addEventListener('fullscreenchange', function() {
         isFullscreen = !!document.fullscreenElement;
     });
-
     document.addEventListener('webkitfullscreenchange', function() {
         isFullscreen = !!document.webkitFullscreenElement;
     });
-
     document.addEventListener('mozfullscreenchange', function() {
         isFullscreen = !!document.mozFullScreenElement;
     });
-
     document.addEventListener('MSFullscreenChange', function() {
         isFullscreen = !!document.msFullscreenElement;
     });
 });
 
-// Função para adicionar novos nomes à base de dados (para expansão futura)
+/* ============================================
+   API para expansão futura
+============================================ */
 function addNameToDatabase(name, data) {
     const normalizedName = normalizeName(name);
-    namesDatabase[normalizedName] = data;
+    namesDatabase[name] = data;           // mantém original
+    normalizedDB[normalizedName] = data;  // atualiza índice normalizado
 }
 
-// Exportar funções para uso externo (se necessário)
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
         searchName,
-        transliterateName,
+        transliterateName,           // agora usa gregokoine + latim clássico
+        transliterateToGreekKoine,
+        transliterateToLatinClassical,
         addNameToDatabase,
         namesDatabase
     };
